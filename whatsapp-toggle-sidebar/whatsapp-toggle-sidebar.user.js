@@ -69,39 +69,35 @@
     applied = null;
   }
 
-  // The divider between the list and the chat can be an element of its own (a thin line or drag
-  // handle) that stays where the list ended; find any thin, tall element on that edge.
-  function dividers(box, col, chat, edge) {
-    const tall = box.getBoundingClientRect().height / 2;
-    const skip = (n) => n === col || n === chat || n === btn;
-    const walk = document.createTreeWalker(box, NodeFilter.SHOW_ELEMENT, {
-      acceptNode: (n) => (skip(n) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT),
+  // WhatsApp keeps empty drawer layers over the columns; the one that starts where the list ends
+  // draws a 1 px left border, which would stay over the chat as a line. Make that border clear.
+  function dividers(edge) {
+    return [...document.querySelectorAll('[data-testid^="drawer-"]')].filter((d) => {
+      if (d.style.getPropertyValue('border-left-color') === 'transparent') return false;
+      return Math.abs(d.getBoundingClientRect().left - edge) <= 2
+        && parseFloat(getComputedStyle(d).borderLeftWidth) > 0;
     });
-    const found = [];
-    for (let n = walk.nextNode(); n; n = walk.nextNode()) {
-      const r = n.getBoundingClientRect();
-      if (r.width > 0 && r.width <= 12 && r.height >= tall && Math.abs(r.left + r.width / 2 - edge) <= 6) found.push(n);
-    }
-    return found;
+  }
+
+  function clear(lines, saved) {
+    lines.forEach((l) => {
+      saved.push(...save(l, ['border-left-color']));
+      l.style.setProperty('border-left-color', 'transparent', 'important');
+    });
   }
 
   function hide(found, force) {
     if (!force && applied && applied.col === found.col && applied.box === found.box
       && applied.chat === found.chat && found.col.style.display === 'none') {
-      // WhatsApp may draw the divider again later: hide the new one as well.
-      dividers(found.box, found.col, found.chat, applied.edge).forEach((l) => {
-        applied.saved.push(...save(l, ['display']));
-        l.style.setProperty('display', 'none', 'important');
-      });
+      clear(dividers(applied.edge), applied.saved); // a drawer layer WhatsApp drew again
       return;
     }
     show();
     const { col, box, chat } = found;
     const edge = col.getBoundingClientRect().right;
-    const lines = dividers(box, col, chat, edge);
+    const lines = dividers(edge);
     const cs = getComputedStyle(box);
     const saved = save(col, ['display']);
-    lines.forEach((l) => saved.push(...save(l, ['display'])));
     if (cs.display.includes('grid')) {
       saved.push(...save(box, ['grid-template-columns']));
       const tracks = cs.gridTemplateColumns.split(' ');
@@ -128,7 +124,7 @@
       chat.style.setProperty('width', 'auto', 'important');
     }
     col.style.setProperty('display', 'none', 'important');
-    lines.forEach((l) => l.style.setProperty('display', 'none', 'important'));
+    clear(lines, saved);
     applied = { col, box, chat, edge, saved };
   }
 
