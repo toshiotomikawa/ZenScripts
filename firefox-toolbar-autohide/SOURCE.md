@@ -1,6 +1,6 @@
 # Source and license
 
-`assets/autohide_toolbox.css` is an unmodified vendored copy of:
+`assets/autohide_toolbox.css` is a vendored copy of the following file, unmodified apart from a final newline:
 
 - Project: `MrOtherGuy/firefox-csshacks`
 - Source: <https://github.com/MrOtherGuy/firefox-csshacks/blob/master/chrome/autohide_toolbox.css>

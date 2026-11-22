@@ -26,7 +26,7 @@ The operation is idempotent. Before changing an existing `user.js`, `userChrome.
 <profile>\.zenqol-backups\firefox-toolbar-autohide\<timestamp>\
 ```
 
-Existing `userChrome.css` rules are preserved. The installer removes duplicate imports of this stylesheet and puts its single import first, before other CSS rules and `@namespace` declarations. It updates `user.js` and never writes live `prefs.js`.
+Existing `userChrome.css` rules are preserved. The installer removes duplicate imports of this stylesheet and keeps a single one; a new import goes first, before other CSS rules and `@namespace` declarations, and an existing one stays where it is. It updates `user.js` and never writes live `prefs.js`.
 
 The installer also creates a per-user Start Menu shortcut named **Firefox Toolbar Auto-Hide Toggle** inside the **ZenQOL** folder. It requires no administrator privileges. Rerunning the installer updates the shortcut safely and preserves a deliberately disabled toolbar state.
 

@@ -1,8 +1,8 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
-; Ctrl+V no File Explorer: se exatamente 1 pasta (filesystem) estiver selecionada
-; no painel principal, cola DENTRO dela via verbo nativo do Shell ("paste").
-; Caso contrario, Ctrl+V funciona normalmente. So afeta janelas do Explorer.
+; Ctrl+V in File Explorer: when exactly one file-system folder is selected in the
+; main pane, pastes INTO it through the Shell's own "paste" verb.
+; Otherwise Ctrl+V works as usual. Affects Explorer windows only.
 
 #HotIf WinActive("ahk_class CabinetWClass") or WinActive("ahk_class ExploreWClass")
 ^v::PasteIntoSelectedFolderOrDefault()
@@ -31,7 +31,7 @@ PasteIntoSelectedFolderOrDefault() {
             }
         }
     } catch {
-        ; qualquer falha na inspecao via COM -> cai no comportamento padrao abaixo
+        ; any COM inspection failure falls back to the normal paste below
     }
     Send("^v")
 }
