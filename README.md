@@ -20,10 +20,6 @@ Run with [AutoHotkey v2](https://www.autohotkey.com/).
 
 - [`ExplorerPasteIntoSelectedFolder.ahk`](autohotkey/ExplorerPasteIntoSelectedFolder.ahk) pastes into the selected folder in File Explorer; `Ctrl+V` works as usual otherwise.
 
-## Firefox
-
-- [Toolbar auto-hide](firefox-toolbar-autohide/README.md) hides Firefox's top bars until the pointer reaches the top edge, without fullscreen.
-
 ## License
 
-[MIT](LICENSE), except `firefox-toolbar-autohide/assets/autohide_toolbox.css`, which is MPL-2.0 from MrOtherGuy/firefox-csshacks (see its [SOURCE.md](firefox-toolbar-autohide/SOURCE.md)).
+[MIT](LICENSE).
