@@ -6,7 +6,7 @@ Userscripts and small Windows tools for calmer, cleaner computing.
 
 | Script | What it does |
 |---|---|
-| [wikipedia-seamless-background](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/wikipedia-seamless-background/wikipedia-seamless-background.user.js) | One background on Wikipedia, day and night |
+| [wikipedia-seamless-background](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/wikipedia-seamless-background/wikipedia-seamless-background.user.js) | Fixes Wikipedia's mismatched background colors. |
 | [x-clean-left-sidebar](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-clean-left-sidebar/x-clean-left-sidebar.user.js) | Hides Calls, Creator Studio and Premium |
 | [x-download-images-button](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-download-images-button/x-download-images-button.user.js) | Saves a post's images at original quality |
 | [x-hide-not-verified-banner](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-not-verified-banner/x-hide-not-verified-banner.user.js) | Hides the "not verified yet" banner on profiles |
@@ -24,4 +24,4 @@ Run with [AutoHotkey v2](https://www.autohotkey.com/).
 
 ## License
 
-[MIT](LICENSE).
+[MIT](LICENSE)
