@@ -8,6 +8,7 @@ Userscripts and small Windows tools for calmer, cleaner computing.
 |---|---|---|
 | [Wikipedia: seamless background](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/wikipedia-background/wikipedia-background.user.js) | Wikimedia projects | One background colour, without grey margins, in light and night modes |
 | [X: download tweet images](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-image-download/x-image-download.user.js) | X | Adds a download button that saves a post's images at original quality |
+| [X: hide Subscribe to Premium](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-premium/x-hide-premium.user.js) | X | Hides the Premium sign-up card in the sidebar |
 | [X: hide What's happening](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-whats-happening/x-hide-whats-happening.user.js) | X | Hides the trending box in the sidebar |
 
 Install [Tampermonkey](https://www.tampermonkey.net/) or [Violentmonkey](https://violentmonkey.github.io/), then click a script's name. Installed scripts update from this repository.
