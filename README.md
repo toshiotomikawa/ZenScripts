@@ -6,7 +6,7 @@ Userscripts and small Windows tools for calmer, cleaner computing.
 
 | Script | What it does |
 |---|---|
-| [whatsapp-toggle-sidebar](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/whatsapp-toggle-sidebar/whatsapp-toggle-sidebar.user.js) | Hides or shows the chat list with Ctrl+Alt+B |
+| [whatsapp-toggle-sidebar](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/whatsapp-toggle-sidebar/whatsapp-toggle-sidebar.user.js) | Adds a button that hides or shows the chat list |
 | [wikipedia-seamless-background](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/wikipedia-seamless-background/wikipedia-seamless-background.user.js) | Fixes Wikipedia's mismatched background colors |
 | [x-clean-left-sidebar](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-clean-left-sidebar/x-clean-left-sidebar.user.js) | Hides Calls, Creator Studio and Premium |
 | [x-download-images-button](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-download-images-button/x-download-images-button.user.js) | Saves a post's images at original quality |
