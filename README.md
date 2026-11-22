@@ -8,6 +8,7 @@ Userscripts and small Windows tools for calmer, cleaner computing.
 |---|---|
 | [wikipedia-seamless-background](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/wikipedia-seamless-background/wikipedia-seamless-background.user.js) | One background on Wikipedia, day and night |
 | [x-download-images-button](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-download-images-button/x-download-images-button.user.js) | Saves a post's images at original quality |
+| [x-hide-not-verified-banner](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-not-verified-banner/x-hide-not-verified-banner.user.js) | Hides the "not verified yet" banner on profiles |
 | [x-hide-subscribe-button](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-subscribe-button/x-hide-subscribe-button.user.js) | Hides the Premium card in the sidebar |
 | [x-hide-whats-happening](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-whats-happening/x-hide-whats-happening.user.js) | Hides the trending box in the sidebar |
 | [youtube-no-translate-button](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/youtube-no-translate-button/youtube-no-translate-button.user.js) | Removes the translate button from comments |
