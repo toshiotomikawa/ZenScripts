@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         x-download-images-button
 // @namespace    https://github.com/toshiotomikawa/ZenScripts
-// @version      1.0.0
+// @version      1.0.1
 // @description  Add a native-styled download button to image tweets on X/Twitter to save all images at original quality.
 // @author       toshiotomikawa
 // @homepageURL  https://github.com/toshiotomikawa/ZenScripts/tree/main/x-download-images-button
@@ -178,18 +178,20 @@
     return cur && cur.parentElement === group ? cur : null;
   }
 
-  function buildButtonSlot(group, article, imageCount) {
+  // The button always copies the Bookmark slot and sits right after it, so it
+  // matches Bookmark's size and spacing and never trades places with it.
+  function bookmarkSlotOf(group) {
     const bookmarkBtn = group.querySelector(
       'button[data-testid="bookmark"], button[data-testid="removeBookmark"]'
     );
+    return bookmarkBtn ? { bookmarkBtn, slot: directSlotOf(group, bookmarkBtn) } : null;
+  }
+
+  function buildButtonSlot(group, article, imageCount, bookmark) {
+    const { bookmarkBtn, slot: templateSlot } = bookmark;
     const shareBtn =
       group.querySelector('button[aria-haspopup="menu"]:not([data-testid])') ||
       group.querySelector('button[aria-label*="Share"]');
-    const templateBtn = bookmarkBtn || shareBtn;
-    if (!templateBtn) return null;
-
-    const templateSlot = directSlotOf(group, templateBtn);
-    if (!templateSlot) return null;
 
     const cloneSlot = templateSlot.cloneNode(true);
     cloneSlot.setAttribute(SLOT_ATTR, '1');
@@ -208,7 +210,7 @@
     const inner = btn.querySelector('div[dir="ltr"]');
     if (inner) {
       // If cloned from an already-bookmarked (blue) button, copy resting color from Share/Reply.
-      if (bookmarkBtn && bookmarkBtn.getAttribute('data-testid') === 'removeBookmark') {
+      if (bookmarkBtn.getAttribute('data-testid') === 'removeBookmark') {
         const neutralSource =
           (shareBtn && shareBtn.querySelector('div[dir="ltr"]')) ||
           group.querySelector('button[data-testid="reply"] div[dir="ltr"]');
@@ -239,7 +241,7 @@
       downloadTweetImages(article, btn);
     });
 
-    return { cloneSlot, anchorSlot: templateSlot, insertAfter: Boolean(bookmarkBtn) };
+    return cloneSlot;
   }
 
   function processArticle(article) {
@@ -256,15 +258,16 @@
       return;
     }
 
-    if (existingSlot) return;
+    // Wait for Bookmark to render; the observer runs again when it does.
+    const bookmark = bookmarkSlotOf(group);
+    if (!bookmark || !bookmark.slot) return;
 
-    const built = buildButtonSlot(group, article, images.length);
-    if (!built) return;
+    const slot = existingSlot || buildButtonSlot(group, article, images.length, bookmark);
+    if (!slot) return;
 
-    if (built.insertAfter) {
-      built.anchorSlot.insertAdjacentElement('afterend', built.cloneSlot);
-    } else {
-      built.anchorSlot.insertAdjacentElement('beforebegin', built.cloneSlot);
+    // X re-renders the bar at times; put the button back right after Bookmark.
+    if (bookmark.slot.nextElementSibling !== slot) {
+      bookmark.slot.insertAdjacentElement('afterend', slot);
     }
   }
 
