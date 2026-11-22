@@ -40,6 +40,8 @@
       if (!box || box === document.body) return null;
       let chat = main;
       while (chat.parentElement !== box) chat = chat.parentElement;
+      // Narrow window: one pane at a time, so leave the layout alone.
+      if (chat.getBoundingClientRect().width === 0) return null;
       return { col, box, chat };
     }
     // No chat open (welcome pane): climb until a parent is wider and has another column in it.
