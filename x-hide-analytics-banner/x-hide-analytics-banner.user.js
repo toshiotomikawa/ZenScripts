@@ -18,9 +18,10 @@
 (function () {
   'use strict';
 
-  // Matched by the banner's "Learn more" Premium link and its preview image, not its text, so it works in every language.
+  // Matched by the banner's own illustration (premium_nux/analytics), not its text, so it works in every language.
+  // Hides the card itself: the one element holding both the dismiss button and that image's wrapper.
   GM_addStyle(`
-    main[role="main"] div:has(> div > a[href^="/i/premium"]):has(img) {
+    div:has(> [role="button"]):has(> div img[src*="/premium_nux/analytics"]) {
       display: none !important;
     }
   `);
