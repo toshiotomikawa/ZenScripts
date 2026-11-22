@@ -1,0 +1,30 @@
+# OS files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+desktop.ini
+
+# Editor directories and files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# Dependencies, temporary and log files
+node_modules/
+*.log
+tmp/
+scratch/
+
+# Agent files stay out of this public repository
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+MEMORY.md
+.claude/
+.codex/
+.agents/
