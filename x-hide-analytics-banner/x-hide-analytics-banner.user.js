@@ -18,10 +18,12 @@
 (function () {
   'use strict';
 
-  // Matched by the banner's own illustration (premium_nux/analytics), not its text, so it works in every language.
-  // Hides the card itself: the one element holding both the dismiss button and that image's wrapper.
+  // Matched by the banner's illustration or its button's link, not its text, so it works in every language.
+  // Under 500px X drops the illustration, so the "Learn more" link rule covers narrow windows.
+  // Hides the card's wrapper, which carries the 16px bottom margin, so no gap is left.
   GM_addStyle(`
-    div:has(> [role="button"]):has(> div img[src*="/premium_nux/analytics"]) {
+    div:has(> div > [role="button"]):has(> div > div img[src*="/premium_nux/analytics"]),
+    div:has(> div > [role="button"]):has(> div > div > a[href^="/i/account_analytics"]) {
       display: none !important;
     }
   `);
