@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         whatsapp-toggle-sidebar
 // @namespace    https://github.com/toshiotomikawa/ZenScripts
-// @version      1.1.0
+// @version      1.1.1
 // @description  Adds a button to WhatsApp Web that hides or shows the chat list, so the open chat fills the window.
 // @author       toshiotomikawa
 // @homepageURL  https://github.com/toshiotomikawa/ZenScripts/tree/main/whatsapp-toggle-sidebar
@@ -69,13 +69,33 @@
     applied = null;
   }
 
+  // The divider between the list and the chat can be an element of its own (a thin line or drag
+  // handle) that stays where the list ended; find any thin, tall element on that edge.
+  function dividers(box, col, chat) {
+    const edge = col.getBoundingClientRect().right;
+    const tall = box.getBoundingClientRect().height / 2;
+    const skip = (n) => n === col || n === chat || n === btn;
+    const walk = document.createTreeWalker(box, NodeFilter.SHOW_ELEMENT, {
+      acceptNode: (n) => (skip(n) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT),
+    });
+    const found = [];
+    for (let n = walk.nextNode(); n; n = walk.nextNode()) {
+      const r = n.getBoundingClientRect();
+      if (r.width > 0 && r.width <= 12 && r.height >= tall && Math.abs(r.left + r.width / 2 - edge) <= 6) found.push(n);
+    }
+    return found;
+  }
+
   function hide(found, force) {
     if (!force && applied && applied.col === found.col && applied.box === found.box
-      && applied.chat === found.chat && found.col.style.display === 'none') return;
+      && applied.chat === found.chat && found.col.style.display === 'none'
+      && applied.lines.every((l) => l.isConnected && l.style.display === 'none')) return;
     show();
     const { col, box, chat } = found;
+    const lines = dividers(box, col, chat);
     const cs = getComputedStyle(box);
     const saved = save(col, ['display']);
+    lines.forEach((l) => saved.push(...save(l, ['display'])));
     if (cs.display.includes('grid')) {
       saved.push(...save(box, ['grid-template-columns']));
       const tracks = cs.gridTemplateColumns.split(' ');
@@ -102,7 +122,8 @@
       chat.style.setProperty('width', 'auto', 'important');
     }
     col.style.setProperty('display', 'none', 'important');
-    applied = { col, box, chat, saved };
+    lines.forEach((l) => l.style.setProperty('display', 'none', 'important'));
+    applied = { col, box, chat, lines, saved };
   }
 
   // The button is built with the DOM API and styled through CSSOM, because WhatsApp's
