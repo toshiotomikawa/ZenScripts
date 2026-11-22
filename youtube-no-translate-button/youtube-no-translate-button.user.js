@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         YouTube: no translate button
+// @name         youtube-no-translate-button
 // @namespace    https://github.com/toshiotomikawa/ZenScripts
 // @version      2.2
 // @description  Removes the translate button from YouTube comments, leaving no gap.

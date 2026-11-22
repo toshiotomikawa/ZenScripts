@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         X: hide What's happening
+// @name         x-hide-whats-happening
 // @namespace    https://github.com/toshiotomikawa/ZenScripts
 // @version      1.0.0
 // @description  Hide only the "What's happening" trending card in the right sidebar on X/Twitter.

@@ -1,13 +1,13 @@
 // ==UserScript==
-// @name         X: download tweet images
+// @name         x-download-images-button
 // @namespace    https://github.com/toshiotomikawa/ZenScripts
 // @version      1.0.0
 // @description  Add a native-styled download button to image tweets on X/Twitter to save all images at original quality.
 // @author       toshiotomikawa
-// @homepageURL  https://github.com/toshiotomikawa/ZenScripts/tree/main/x-image-download
+// @homepageURL  https://github.com/toshiotomikawa/ZenScripts/tree/main/x-download-images-button
 // @supportURL   https://github.com/toshiotomikawa/ZenScripts/issues
-// @updateURL    https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-image-download/x-image-download.user.js
-// @downloadURL  https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-image-download/x-image-download.user.js
+// @updateURL    https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-download-images-button/x-download-images-button.user.js
+// @downloadURL  https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-download-images-button/x-download-images-button.user.js
 // @license      MIT
 // @match        https://x.com/*
 // @match        https://twitter.com/*

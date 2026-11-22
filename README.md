@@ -4,13 +4,13 @@ Userscripts and small Windows tools for calmer, cleaner computing.
 
 ## Userscripts
 
-| Script | Site | What it does |
-|---|---|---|
-| [Wikipedia: seamless background](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/wikipedia-background/wikipedia-background.user.js) | Wikimedia projects | One background colour, without grey margins, in light and night modes |
-| [X: download tweet images](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-image-download/x-image-download.user.js) | X | Adds a download button that saves a post's images at original quality |
-| [X: hide Subscribe to Premium](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-premium/x-hide-premium.user.js) | X | Hides the Premium sign-up card in the sidebar |
-| [X: hide What's happening](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-whats-happening/x-hide-whats-happening.user.js) | X | Hides the trending box in the sidebar |
-| [YouTube: no translate button](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/youtube-no-translate-button/youtube-no-translate-button.user.js) | YouTube | Removes the translate button from comments, leaving no gap |
+| Script | What it does |
+|---|---|
+| [wikipedia-seamless-background](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/wikipedia-seamless-background/wikipedia-seamless-background.user.js) | One background on Wikipedia, day and night |
+| [x-download-images-button](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-download-images-button/x-download-images-button.user.js) | Saves a post's images at original quality |
+| [x-hide-subscribe-button](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-subscribe-button/x-hide-subscribe-button.user.js) | Hides the Premium card in the sidebar |
+| [x-hide-whats-happening](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-whats-happening/x-hide-whats-happening.user.js) | Hides the trending box in the sidebar |
+| [youtube-no-translate-button](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/youtube-no-translate-button/youtube-no-translate-button.user.js) | Removes the translate button from comments |
 
 Install [Tampermonkey](https://www.tampermonkey.net/) or [Violentmonkey](https://violentmonkey.github.io/), then click a script's name. Installed scripts update from this repository.
 
@@ -19,7 +19,6 @@ Install [Tampermonkey](https://www.tampermonkey.net/) or [Violentmonkey](https:/
 Run with [AutoHotkey v2](https://www.autohotkey.com/).
 
 - [`ExplorerPasteIntoSelectedFolder.ahk`](autohotkey/ExplorerPasteIntoSelectedFolder.ahk) pastes into the selected folder in File Explorer; `Ctrl+V` works as usual otherwise.
-- [`ConfirmChromeWindowClose.ahk`](autohotkey/ConfirmChromeWindowClose.ahk) asks before closing a whole Chrome window; closing tabs is unaffected.
 
 ## Firefox
 

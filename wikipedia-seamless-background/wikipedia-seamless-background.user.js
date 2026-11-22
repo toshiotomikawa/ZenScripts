@@ -1,13 +1,13 @@
 // ==UserScript==
-// @name         Wikipedia: seamless background
+// @name         wikipedia-seamless-background
 // @namespace    https://github.com/toshiotomikawa/ZenScripts
 // @version      1.0.0
 // @description  Gives Wikipedia and other Wikimedia projects one background colour, removing the grey margins around articles, in light and night modes.
 // @author       toshiotomikawa
-// @homepageURL  https://github.com/toshiotomikawa/ZenScripts
+// @homepageURL  https://github.com/toshiotomikawa/ZenScripts/tree/main/wikipedia-seamless-background
 // @supportURL   https://github.com/toshiotomikawa/ZenScripts/issues
-// @updateURL    https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/wikipedia-background/wikipedia-background.user.js
-// @downloadURL  https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/wikipedia-background/wikipedia-background.user.js
+// @updateURL    https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/wikipedia-seamless-background/wikipedia-seamless-background.user.js
+// @downloadURL  https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/wikipedia-seamless-background/wikipedia-seamless-background.user.js
 // @license      MIT
 // @match        *://*.wikipedia.org/*
 // @match        *://*.wikimedia.org/*
