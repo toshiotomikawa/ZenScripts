@@ -71,8 +71,7 @@
 
   // The divider between the list and the chat can be an element of its own (a thin line or drag
   // handle) that stays where the list ended; find any thin, tall element on that edge.
-  function dividers(box, col, chat) {
-    const edge = col.getBoundingClientRect().right;
+  function dividers(box, col, chat, edge) {
     const tall = box.getBoundingClientRect().height / 2;
     const skip = (n) => n === col || n === chat || n === btn;
     const walk = document.createTreeWalker(box, NodeFilter.SHOW_ELEMENT, {
@@ -88,11 +87,18 @@
 
   function hide(found, force) {
     if (!force && applied && applied.col === found.col && applied.box === found.box
-      && applied.chat === found.chat && found.col.style.display === 'none'
-      && applied.lines.every((l) => l.isConnected && l.style.display === 'none')) return;
+      && applied.chat === found.chat && found.col.style.display === 'none') {
+      // WhatsApp may draw the divider again later: hide the new one as well.
+      dividers(found.box, found.col, found.chat, applied.edge).forEach((l) => {
+        applied.saved.push(...save(l, ['display']));
+        l.style.setProperty('display', 'none', 'important');
+      });
+      return;
+    }
     show();
     const { col, box, chat } = found;
-    const lines = dividers(box, col, chat);
+    const edge = col.getBoundingClientRect().right;
+    const lines = dividers(box, col, chat, edge);
     const cs = getComputedStyle(box);
     const saved = save(col, ['display']);
     lines.forEach((l) => saved.push(...save(l, ['display'])));
@@ -123,7 +129,7 @@
     }
     col.style.setProperty('display', 'none', 'important');
     lines.forEach((l) => l.style.setProperty('display', 'none', 'important'));
-    applied = { col, box, chat, lines, saved };
+    applied = { col, box, chat, edge, saved };
   }
 
   // The button is built with the DOM API and styled through CSSOM, because WhatsApp's
