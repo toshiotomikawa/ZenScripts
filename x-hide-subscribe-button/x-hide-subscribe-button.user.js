@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         x-hide-subscribe-button
 // @namespace    https://github.com/toshiotomikawa/ZenScripts
-// @version      1.0.0
+// @version      1.1.0
 // @description  Hide the "Subscribe to Premium" card in the right sidebar on X/Twitter.
 // @author       toshiotomikawa
 // @homepageURL  https://github.com/toshiotomikawa/ZenScripts/tree/main/x-hide-subscribe-button
@@ -19,9 +19,10 @@
   'use strict';
 
   // Matched by the card's sign-up link, not its label, so it works in every language.
-  // Hides the card's own wrapper, which carries its bottom margin, so no gap is left.
+  // Covers both X's legacy React Native Web sidebar and the newer semantic <aside>/<section> UI.
   GM_addStyle(`
-    [data-testid="sidebarColumn"] div:has(> aside a[href^="/i/premium_sign_up"]) {
+    [data-testid="sidebarColumn"] div:has(> aside a[href^="/i/premium_sign_up"]),
+    aside section:has(a[href^="/i/premium_sign_up"]) {
       display: none !important;
     }
   `);

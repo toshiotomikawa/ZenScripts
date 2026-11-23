@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         x-download-images-button
 // @namespace    https://github.com/toshiotomikawa/ZenScripts
-// @version      1.0.1
+// @version      1.1.0
 // @description  Add a native-styled download button to image tweets on X/Twitter to save all images at original quality.
 // @author       toshiotomikawa
 // @homepageURL  https://github.com/toshiotomikawa/ZenScripts/tree/main/x-download-images-button
@@ -65,6 +65,11 @@
       const m = a.getAttribute('href').match(/^\/([^/]+)\/status\/(\d+)/);
       if (m) return { username: m[1], tweetId: m[2] };
     }
+    for (const a of links) {
+      if (isInsideQuote(a, article)) continue;
+      const m = a.getAttribute('href').match(/^\/([^/]+)\/status\/(\d+)(?:\/|$)/);
+      if (m) return { username: m[1], tweetId: m[2] };
+    }
     const loc = location.pathname.match(/^\/([^/]+)\/status\/(\d+)/);
     if (loc) return { username: loc[1], tweetId: loc[2] };
     return { username: 'x', tweetId: String(Date.now()) };
@@ -85,7 +90,9 @@
   }
 
   function getOwnImages(article, tweetId) {
-    const imgs = article.querySelectorAll('[data-testid="tweetPhoto"] img[src*="pbs.twimg.com/media/"]');
+    const imgs = article.querySelectorAll(
+      '[data-testid="tweetPhoto"] img[src*="pbs.twimg.com/media/"], a[href*="/photo/"] img[src*="pbs.twimg.com/media/"]'
+    );
     const seen = new Set();
     const out = [];
     for (const img of imgs) {
@@ -167,6 +174,11 @@
     for (const g of groups) {
       if (!isInsideQuote(g, article)) return g;
     }
+    const bm = article.querySelector('[data-engagement-action="bookmark"]');
+    if (bm && !isInsideQuote(bm, article)) {
+      const slot = bm.parentElement;
+      if (slot && slot.parentElement) return slot.parentElement;
+    }
     return null;
   }
 
@@ -182,7 +194,7 @@
   // matches Bookmark's size and spacing and never trades places with it.
   function bookmarkSlotOf(group) {
     const bookmarkBtn = group.querySelector(
-      'button[data-testid="bookmark"], button[data-testid="removeBookmark"]'
+      'button[data-testid="bookmark"], button[data-testid="removeBookmark"], [data-engagement-action="bookmark"] button'
     );
     return bookmarkBtn ? { bookmarkBtn, slot: directSlotOf(group, bookmarkBtn) } : null;
   }
@@ -195,11 +207,16 @@
 
     const cloneSlot = templateSlot.cloneNode(true);
     cloneSlot.setAttribute(SLOT_ATTR, '1');
+    const actionWrap = cloneSlot.querySelector('[data-engagement-action]');
+    if (actionWrap) actionWrap.removeAttribute('data-engagement-action');
 
     const btn = cloneSlot.querySelector('button');
     if (!btn) return null;
 
     const label = imageCount > 1 ? 'Download images' : 'Download image';
+    btn.removeAttribute('id');
+    btn.removeAttribute('data-base-ui-tooltip-trigger');
+    btn.removeAttribute('aria-pressed');
     btn.setAttribute('data-testid', BTN_TESTID);
     btn.setAttribute('type', 'button');
     btn.setAttribute('aria-label', label);
@@ -293,15 +310,15 @@
 
   function scanRoot(root) {
     if (!root || root.nodeType !== 1) return;
-    if (root.matches('article[data-testid="tweet"]')) {
+    if (root.matches('article')) {
       queueArticle(root);
     }
-    const closest = root.closest && root.closest('article[data-testid="tweet"]');
+    const closest = root.closest && root.closest('article');
     if (closest) {
       queueArticle(closest);
     }
     if (root.querySelectorAll) {
-      for (const a of root.querySelectorAll('article[data-testid="tweet"]')) {
+      for (const a of root.querySelectorAll('article')) {
         queueArticle(a);
       }
     }
@@ -313,7 +330,7 @@
     for (const m of mutations) {
       // X can swap an image's src in place after the tweet first renders.
       if (m.type === 'attributes') {
-        queueArticle(m.target.closest('article[data-testid="tweet"]'));
+        queueArticle(m.target.closest('article'));
         continue;
       }
       for (const node of m.addedNodes) {
