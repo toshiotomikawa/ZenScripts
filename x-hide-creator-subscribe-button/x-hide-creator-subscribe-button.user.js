@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         x-hide-creator-subscribe-button
 // @namespace    https://github.com/toshiotomikawa/ZenScripts
-// @version      1.0.0
+// @version      1.1.0
 // @description  Hide creator "Subscribe" buttons on X/Twitter (posts, articles, user lists).
 // @author       toshiotomikawa
 // @homepageURL  https://github.com/toshiotomikawa/ZenScripts/tree/main/x-hide-creator-subscribe-button
@@ -18,10 +18,12 @@
 (function () {
   'use strict';
 
-  // Matched by the button's test id ("<user id>-subscribe"), not its label, so it works in every language.
-  // Hides the button's own wrapper, so the row's 8px gap goes with it.
+  // Matched by test id (legacy layout) and subscription URL path (Tailwind/Base-UI layout),
+  // not by label, so it works in every language. Hides the wrapper so no gap is left.
   GM_addStyle(`
-    div:has(> button[data-testid$="-subscribe"]) {
+    div:has(> button[data-testid$="-subscribe"]),
+    span:has(> a[href$="/creator-subscriptions/subscribe"]),
+    a[href$="/creator-subscriptions/subscribe"] {
       display: none !important;
     }
   `);

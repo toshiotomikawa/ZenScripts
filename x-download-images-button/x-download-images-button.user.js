@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         x-download-images-button
 // @namespace    https://github.com/toshiotomikawa/ZenScripts
-// @version      1.1.0
+// @version      1.1.1
 // @description  Add a native-styled download button to image tweets on X/Twitter to save all images at original quality.
 // @author       toshiotomikawa
 // @homepageURL  https://github.com/toshiotomikawa/ZenScripts/tree/main/x-download-images-button
@@ -193,8 +193,17 @@
   // The button always copies the Bookmark slot and sits right after it, so it
   // matches Bookmark's size and spacing and never trades places with it.
   function bookmarkSlotOf(group) {
+    const newAction = group.querySelector('[data-engagement-action="bookmark"]');
+    if (newAction) {
+      const bookmarkBtn = newAction.querySelector('button');
+      if (bookmarkBtn) {
+        const wrap = newAction.parentElement;
+        const slot = wrap && wrap.children.length === 1 ? wrap : newAction;
+        return { bookmarkBtn, slot };
+      }
+    }
     const bookmarkBtn = group.querySelector(
-      'button[data-testid="bookmark"], button[data-testid="removeBookmark"], [data-engagement-action="bookmark"] button'
+      'button[data-testid="bookmark"], button[data-testid="removeBookmark"]'
     );
     return bookmarkBtn ? { bookmarkBtn, slot: directSlotOf(group, bookmarkBtn) } : null;
   }
@@ -209,6 +218,9 @@
     cloneSlot.setAttribute(SLOT_ATTR, '1');
     const actionWrap = cloneSlot.querySelector('[data-engagement-action]');
     if (actionWrap) actionWrap.removeAttribute('data-engagement-action');
+    if (cloneSlot.hasAttribute('data-engagement-action')) {
+      cloneSlot.removeAttribute('data-engagement-action');
+    }
 
     const btn = cloneSlot.querySelector('button');
     if (!btn) return null;
@@ -223,6 +235,12 @@
     btn.setAttribute('title', label);
     btn.removeAttribute('aria-expanded');
     btn.removeAttribute('aria-haspopup');
+
+    // In the Tailwind/Base-UI layout, an already-bookmarked button uses text-brand instead of text-secondary.
+    if (btn.classList.contains('text-brand')) {
+      btn.classList.remove('text-brand');
+      btn.classList.add('text-secondary');
+    }
 
     const inner = btn.querySelector('div[dir="ltr"]');
     if (inner) {
@@ -243,8 +261,19 @@
 
     const svg = btn.querySelector('svg');
     if (svg) {
-      const hoverCircle = svg.previousElementSibling;
-      if (hoverCircle) hoverCircle.setAttribute(CIRCLE_ATTR, '1');
+      // Strip count spans next to the icon in the Tailwind/Base-UI layout (x-engagement-pill),
+      // while keeping the legacy empty hover-circle div if present.
+      const svgParent = svg.parentElement;
+      if (svgParent && svgParent !== btn) {
+        for (const child of Array.from(svgParent.children)) {
+          if (child === svg) continue;
+          if (child === svg.previousElementSibling && child.tagName === 'DIV' && !child.textContent.trim()) {
+            child.setAttribute(CIRCLE_ATTR, '1');
+            continue;
+          }
+          child.remove();
+        }
+      }
       const g = svg.querySelector('g') || svg;
       while (g.firstChild) g.removeChild(g.firstChild);
       const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');

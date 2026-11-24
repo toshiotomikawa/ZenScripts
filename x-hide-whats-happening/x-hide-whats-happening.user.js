@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         x-hide-whats-happening
 // @namespace    https://github.com/toshiotomikawa/ZenScripts
-// @version      1.1.0
+// @version      1.1.1
 // @description  Hide only the "What's happening" trending card in the right sidebar on X/Twitter.
 // @author       toshiotomikawa
 // @homepageURL  https://github.com/toshiotomikawa/ZenScripts/tree/main/x-hide-whats-happening
@@ -18,10 +18,18 @@
 (function () {
   'use strict';
 
+  // Matched by trend links and the card's "Show more" Explore/Trends link, not its label,
+  // so it works in every language and even when X renders an empty card with no trend rows.
   GM_addStyle(`
     [data-testid="sidebarColumn"] div:has(> section[role="region"] > [aria-label="Timeline: Trending now"]),
     [data-testid="sidebarColumn"] div:has(> section[role="region"] [data-testid="trend"]),
-    aside section:has(a[href*="vertical=trends"]) {
+    [data-testid="sidebarColumn"] div:has(> section[role="region"] a[href="/explore"]),
+    [data-testid="sidebarColumn"] div:has(> section[role="region"] a[href^="/explore/"]),
+    [data-testid="sidebarColumn"] div:has(> section[role="region"] a[href^="/i/trends"]),
+    aside section:has(a[href*="vertical=trends"]),
+    aside section:has(a[href="/explore"]),
+    aside section:has(a[href^="/explore/"]),
+    aside section:has(a[href^="/i/trends"]) {
       display: none !important;
     }
   `);
