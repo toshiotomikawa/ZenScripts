@@ -13,6 +13,7 @@ Userscripts and small Windows tools for calmer, cleaner computing.
 | [x-hide-analytics-banner](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-analytics-banner/x-hide-analytics-banner.user.js) | Hides the `Access your post analytics` banner |
 | [x-hide-creator-subscribe-button](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-creator-subscribe-button/x-hide-creator-subscribe-button.user.js) | Hides creator `Subscribe` buttons |
 | [x-hide-get-verified-button](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-get-verified-button/x-hide-get-verified-button.user.js) | Hides the `Get verified` pill on profiles |
+| [x-hide-grok-button](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-grok-button/x-hide-grok-button.user.js) | Hides `Grok` from the left sidebar |
 | [x-hide-not-verified-banner](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-not-verified-banner/x-hide-not-verified-banner.user.js) | Hides the `not verified yet` banner on profiles |
 | [x-hide-subscribe-button](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-subscribe-button/x-hide-subscribe-button.user.js) | Hides the Premium card in the sidebar |
 | [x-hide-whats-happening](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-whats-happening/x-hide-whats-happening.user.js) | Hides the trending box in the sidebar |
