@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name         x-clean-left-sidebar
-// @namespace    https://github.com/toshiotomikawa/ZenScripts
+// @namespace    https://github.com/toshiotomikawa/zenscripts
 // @version      1.1.0
 // @description  Hide Calls, Creator Studio and Premium from the left sidebar on X/Twitter.
 // @author       toshiotomikawa
-// @homepageURL  https://github.com/toshiotomikawa/ZenScripts/tree/main/x-clean-left-sidebar
-// @supportURL   https://github.com/toshiotomikawa/ZenScripts/issues
-// @updateURL    https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-clean-left-sidebar/x-clean-left-sidebar.user.js
-// @downloadURL  https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-clean-left-sidebar/x-clean-left-sidebar.user.js
+// @homepageURL  https://github.com/toshiotomikawa/zenscripts/tree/main/x-clean-left-sidebar
+// @supportURL   https://github.com/toshiotomikawa/zenscripts/issues
+// @updateURL    https://raw.githubusercontent.com/toshiotomikawa/zenscripts/main/x-clean-left-sidebar/x-clean-left-sidebar.user.js
+// @downloadURL  https://raw.githubusercontent.com/toshiotomikawa/zenscripts/main/x-clean-left-sidebar/x-clean-left-sidebar.user.js
 // @license      MIT
 // @match        https://x.com/*
 // @match        https://twitter.com/*

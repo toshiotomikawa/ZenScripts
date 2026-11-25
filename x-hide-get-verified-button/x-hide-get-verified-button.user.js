@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name         x-hide-get-verified-button
-// @namespace    https://github.com/toshiotomikawa/ZenScripts
+// @namespace    https://github.com/toshiotomikawa/zenscripts
 // @version      1.0.0
 // @description  Hide the "Get verified" pill next to the handle on X/Twitter profiles.
 // @author       toshiotomikawa
-// @homepageURL  https://github.com/toshiotomikawa/ZenScripts/tree/main/x-hide-get-verified-button
-// @supportURL   https://github.com/toshiotomikawa/ZenScripts/issues
-// @updateURL    https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-get-verified-button/x-hide-get-verified-button.user.js
-// @downloadURL  https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-get-verified-button/x-hide-get-verified-button.user.js
+// @homepageURL  https://github.com/toshiotomikawa/zenscripts/tree/main/x-hide-get-verified-button
+// @supportURL   https://github.com/toshiotomikawa/zenscripts/issues
+// @updateURL    https://raw.githubusercontent.com/toshiotomikawa/zenscripts/main/x-hide-get-verified-button/x-hide-get-verified-button.user.js
+// @downloadURL  https://raw.githubusercontent.com/toshiotomikawa/zenscripts/main/x-hide-get-verified-button/x-hide-get-verified-button.user.js
 // @license      MIT
 // @match        https://x.com/*
 // @match        https://twitter.com/*

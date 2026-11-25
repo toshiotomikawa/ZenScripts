@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name         x-download-videos-button
-// @namespace    https://github.com/toshiotomikawa/ZenScripts
+// @namespace    https://github.com/toshiotomikawa/zenscripts
 // @version      1.1.0
 // @description  Add a native-styled download button to video tweets on X/Twitter to save all videos at source quality.
 // @author       toshiotomikawa
-// @homepageURL  https://github.com/toshiotomikawa/ZenScripts/tree/main/x-download-videos-button
-// @supportURL   https://github.com/toshiotomikawa/ZenScripts/issues
-// @updateURL    https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-download-videos-button/x-download-videos-button.user.js
-// @downloadURL  https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-download-videos-button/x-download-videos-button.user.js
+// @homepageURL  https://github.com/toshiotomikawa/zenscripts/tree/main/x-download-videos-button
+// @supportURL   https://github.com/toshiotomikawa/zenscripts/issues
+// @updateURL    https://raw.githubusercontent.com/toshiotomikawa/zenscripts/main/x-download-videos-button/x-download-videos-button.user.js
+// @downloadURL  https://raw.githubusercontent.com/toshiotomikawa/zenscripts/main/x-download-videos-button/x-download-videos-button.user.js
 // @license      MIT
 // @match        https://x.com/*
 // @match        https://twitter.com/*

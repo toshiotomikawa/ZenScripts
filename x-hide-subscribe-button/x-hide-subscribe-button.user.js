@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name         x-hide-subscribe-button
-// @namespace    https://github.com/toshiotomikawa/ZenScripts
+// @namespace    https://github.com/toshiotomikawa/zenscripts
 // @version      1.1.0
 // @description  Hide the "Subscribe to Premium" card in the right sidebar on X/Twitter.
 // @author       toshiotomikawa
-// @homepageURL  https://github.com/toshiotomikawa/ZenScripts/tree/main/x-hide-subscribe-button
-// @supportURL   https://github.com/toshiotomikawa/ZenScripts/issues
-// @updateURL    https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-subscribe-button/x-hide-subscribe-button.user.js
-// @downloadURL  https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-subscribe-button/x-hide-subscribe-button.user.js
+// @homepageURL  https://github.com/toshiotomikawa/zenscripts/tree/main/x-hide-subscribe-button
+// @supportURL   https://github.com/toshiotomikawa/zenscripts/issues
+// @updateURL    https://raw.githubusercontent.com/toshiotomikawa/zenscripts/main/x-hide-subscribe-button/x-hide-subscribe-button.user.js
+// @downloadURL  https://raw.githubusercontent.com/toshiotomikawa/zenscripts/main/x-hide-subscribe-button/x-hide-subscribe-button.user.js
 // @license      MIT
 // @match        https://x.com/*
 // @match        https://twitter.com/*

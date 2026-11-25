@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name         x-hide-creator-subscribe-button
-// @namespace    https://github.com/toshiotomikawa/ZenScripts
+// @namespace    https://github.com/toshiotomikawa/zenscripts
 // @version      1.1.0
 // @description  Hide creator "Subscribe" buttons on X/Twitter (posts, articles, user lists).
 // @author       toshiotomikawa
-// @homepageURL  https://github.com/toshiotomikawa/ZenScripts/tree/main/x-hide-creator-subscribe-button
-// @supportURL   https://github.com/toshiotomikawa/ZenScripts/issues
-// @updateURL    https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-creator-subscribe-button/x-hide-creator-subscribe-button.user.js
-// @downloadURL  https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-creator-subscribe-button/x-hide-creator-subscribe-button.user.js
+// @homepageURL  https://github.com/toshiotomikawa/zenscripts/tree/main/x-hide-creator-subscribe-button
+// @supportURL   https://github.com/toshiotomikawa/zenscripts/issues
+// @updateURL    https://raw.githubusercontent.com/toshiotomikawa/zenscripts/main/x-hide-creator-subscribe-button/x-hide-creator-subscribe-button.user.js
+// @downloadURL  https://raw.githubusercontent.com/toshiotomikawa/zenscripts/main/x-hide-creator-subscribe-button/x-hide-creator-subscribe-button.user.js
 // @license      MIT
 // @match        https://x.com/*
 // @match        https://twitter.com/*

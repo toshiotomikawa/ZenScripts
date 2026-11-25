@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name         x-hide-not-verified-banner
-// @namespace    https://github.com/toshiotomikawa/ZenScripts
+// @namespace    https://github.com/toshiotomikawa/zenscripts
 // @version      1.1.0
 // @description  Hide the "You aren't verified yet" banner on X/Twitter profiles.
 // @author       toshiotomikawa
-// @homepageURL  https://github.com/toshiotomikawa/ZenScripts/tree/main/x-hide-not-verified-banner
-// @supportURL   https://github.com/toshiotomikawa/ZenScripts/issues
-// @updateURL    https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-not-verified-banner/x-hide-not-verified-banner.user.js
-// @downloadURL  https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-not-verified-banner/x-hide-not-verified-banner.user.js
+// @homepageURL  https://github.com/toshiotomikawa/zenscripts/tree/main/x-hide-not-verified-banner
+// @supportURL   https://github.com/toshiotomikawa/zenscripts/issues
+// @updateURL    https://raw.githubusercontent.com/toshiotomikawa/zenscripts/main/x-hide-not-verified-banner/x-hide-not-verified-banner.user.js
+// @downloadURL  https://raw.githubusercontent.com/toshiotomikawa/zenscripts/main/x-hide-not-verified-banner/x-hide-not-verified-banner.user.js
 // @license      MIT
 // @match        https://x.com/*
 // @match        https://twitter.com/*

@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name         x-hide-grok-button
-// @namespace    https://github.com/toshiotomikawa/ZenScripts
+// @namespace    https://github.com/toshiotomikawa/zenscripts
 // @version      1.0.0
 // @description  Hide Grok from the left sidebar on X/Twitter.
 // @author       toshiotomikawa
-// @homepageURL  https://github.com/toshiotomikawa/ZenScripts/tree/main/x-hide-grok-button
-// @supportURL   https://github.com/toshiotomikawa/ZenScripts/issues
-// @updateURL    https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-grok-button/x-hide-grok-button.user.js
-// @downloadURL  https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-grok-button/x-hide-grok-button.user.js
+// @homepageURL  https://github.com/toshiotomikawa/zenscripts/tree/main/x-hide-grok-button
+// @supportURL   https://github.com/toshiotomikawa/zenscripts/issues
+// @updateURL    https://raw.githubusercontent.com/toshiotomikawa/zenscripts/main/x-hide-grok-button/x-hide-grok-button.user.js
+// @downloadURL  https://raw.githubusercontent.com/toshiotomikawa/zenscripts/main/x-hide-grok-button/x-hide-grok-button.user.js
 // @license      MIT
 // @match        https://x.com/*
 // @match        https://twitter.com/*

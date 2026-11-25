@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name         youtube-no-translate-button
-// @namespace    https://github.com/toshiotomikawa/ZenScripts
+// @namespace    https://github.com/toshiotomikawa/zenscripts
 // @version      2.2
 // @description  Removes the translate button from YouTube comments, leaving no gap.
 // @author       toshiotomikawa
-// @homepageURL  https://github.com/toshiotomikawa/ZenScripts/tree/main/youtube-no-translate-button
-// @supportURL   https://github.com/toshiotomikawa/ZenScripts/issues
-// @updateURL    https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/youtube-no-translate-button/youtube-no-translate-button.user.js
-// @downloadURL  https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/youtube-no-translate-button/youtube-no-translate-button.user.js
+// @homepageURL  https://github.com/toshiotomikawa/zenscripts/tree/main/youtube-no-translate-button
+// @supportURL   https://github.com/toshiotomikawa/zenscripts/issues
+// @updateURL    https://raw.githubusercontent.com/toshiotomikawa/zenscripts/main/youtube-no-translate-button/youtube-no-translate-button.user.js
+// @downloadURL  https://raw.githubusercontent.com/toshiotomikawa/zenscripts/main/youtube-no-translate-button/youtube-no-translate-button.user.js
 // @license      MIT
 // @match        https://www.youtube.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=youtube.com

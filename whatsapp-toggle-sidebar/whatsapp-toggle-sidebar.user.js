@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name         whatsapp-toggle-sidebar
-// @namespace    https://github.com/toshiotomikawa/ZenScripts
+// @namespace    https://github.com/toshiotomikawa/zenscripts
 // @version      1.1.1
 // @description  Adds a button to WhatsApp Web that hides or shows the chat list, so the open chat fills the window.
 // @author       toshiotomikawa
-// @homepageURL  https://github.com/toshiotomikawa/ZenScripts/tree/main/whatsapp-toggle-sidebar
-// @supportURL   https://github.com/toshiotomikawa/ZenScripts/issues
-// @updateURL    https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/whatsapp-toggle-sidebar/whatsapp-toggle-sidebar.user.js
-// @downloadURL  https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/whatsapp-toggle-sidebar/whatsapp-toggle-sidebar.user.js
+// @homepageURL  https://github.com/toshiotomikawa/zenscripts/tree/main/whatsapp-toggle-sidebar
+// @supportURL   https://github.com/toshiotomikawa/zenscripts/issues
+// @updateURL    https://raw.githubusercontent.com/toshiotomikawa/zenscripts/main/whatsapp-toggle-sidebar/whatsapp-toggle-sidebar.user.js
+// @downloadURL  https://raw.githubusercontent.com/toshiotomikawa/zenscripts/main/whatsapp-toggle-sidebar/whatsapp-toggle-sidebar.user.js
 // @license      MIT
 // @match        https://web.whatsapp.com/*
 // @grant        none

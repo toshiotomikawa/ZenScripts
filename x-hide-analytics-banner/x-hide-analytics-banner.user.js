@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name         x-hide-analytics-banner
-// @namespace    https://github.com/toshiotomikawa/ZenScripts
+// @namespace    https://github.com/toshiotomikawa/zenscripts
 // @version      1.0.0
 // @description  Hide the "Access your post analytics" Premium banner on X/Twitter.
 // @author       toshiotomikawa
-// @homepageURL  https://github.com/toshiotomikawa/ZenScripts/tree/main/x-hide-analytics-banner
-// @supportURL   https://github.com/toshiotomikawa/ZenScripts/issues
-// @updateURL    https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-analytics-banner/x-hide-analytics-banner.user.js
-// @downloadURL  https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-analytics-banner/x-hide-analytics-banner.user.js
+// @homepageURL  https://github.com/toshiotomikawa/zenscripts/tree/main/x-hide-analytics-banner
+// @supportURL   https://github.com/toshiotomikawa/zenscripts/issues
+// @updateURL    https://raw.githubusercontent.com/toshiotomikawa/zenscripts/main/x-hide-analytics-banner/x-hide-analytics-banner.user.js
+// @downloadURL  https://raw.githubusercontent.com/toshiotomikawa/zenscripts/main/x-hide-analytics-banner/x-hide-analytics-banner.user.js
 // @license      MIT
 // @match        https://x.com/*
 // @match        https://twitter.com/*
