@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         x-download-videos-button
 // @namespace    https://github.com/toshiotomikawa/ZenScripts
-// @version      1.0.1
+// @version      1.1.0
 // @description  Add a native-styled download button to video tweets on X/Twitter to save all videos at source quality.
 // @author       toshiotomikawa
 // @homepageURL  https://github.com/toshiotomikawa/ZenScripts/tree/main/x-download-videos-button
@@ -12,9 +12,11 @@
 // @match        https://x.com/*
 // @match        https://twitter.com/*
 // @run-at       document-idle
-// @grant        none
-// @sandbox      MAIN_WORLD
-// @inject-into  page
+// @grant        GM_addStyle
+// @grant        GM_xmlhttpRequest
+// @connect      cdn.syndication.twimg.com
+// @connect      api.fxtwitter.com
+// @connect      video.twimg.com
 // ==/UserScript==
 
 (function () {
@@ -28,13 +30,7 @@
     'M12 16.41l-5.7-5.7 1.41-1.42L11 12.59V3h2v9.59l3.3-3.3 1.41 1.42L12 16.41z' +
     'M21 15l-.02 3.51c0 1.38-1.12 2.49-2.5 2.49H5.5C4.11 21 3 19.88 3 18.5V15h2v3.5c0 .28.22.5.5.5h12.98c.28 0 .5-.22.5-.5L19 15h2z';
 
-  function addStyle(css) {
-    const style = document.createElement('style');
-    style.textContent = css;
-    (document.head || document.documentElement).appendChild(style);
-  }
-
-  addStyle(`
+  GM_addStyle(`
     button[data-testid="${BTN_TESTID}"]:hover > div,
     button[data-testid="${BTN_TESTID}"]:focus-visible > div {
       color: rgb(29, 155, 240) !important;
@@ -78,18 +74,46 @@
     }
     const loc = location.pathname.match(/^\/([^/]+)\/status\/(\d+)/);
     if (loc) return { username: loc[1], tweetId: loc[2] };
-    return { username: 'x', tweetId: String(Date.now()) };
+    return { username: 'x', tweetId: null };
   }
 
-  function getReactFiber(el) {
-    const target = el && (el.wrappedJSObject || el);
-    if (!target) return null;
-    for (const k of Object.keys(target)) {
-      if (k.startsWith('__reactFiber$') || k.startsWith('__reactInternalInstance$')) {
-        return target[k];
+  // Pure DOM detection so the button renders reliably across Firefox, Chrome, and any userscript sandbox.
+  function countOwnVideos(article) {
+    const raw = Array.from(
+      article.querySelectorAll(
+        'video, [data-testid="videoComponent"], [data-testid="videoPlayer"], img[src*="video_thumb"]'
+      )
+    ).filter((el) => !isInsideQuote(el, article));
+
+    const kept = [];
+    for (const el of raw) {
+      if (kept.some((other) => other === el || other.contains(el) || el.contains(other))) {
+        continue;
       }
+      kept.push(el);
     }
-    return null;
+    return kept.length;
+  }
+
+  function getDirectVideoUrls(article) {
+    const videos = article.querySelectorAll('video');
+    const seen = new Set();
+    const out = [];
+    for (const v of videos) {
+      if (isInsideQuote(v, article)) continue;
+      const src = v.currentSrc || v.src || '';
+      if (!/^https:\/\/.*\.mp4(\?|$)/i.test(src)) continue;
+      let key;
+      try {
+        key = new URL(src).pathname;
+      } catch {
+        continue;
+      }
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push({ url: src, ext: 'mp4' });
+    }
+    return out;
   }
 
   function resolutionArea(url) {
@@ -97,14 +121,8 @@
     return m ? Number(m[1]) * Number(m[2]) : 0;
   }
 
-  function pickBestMp4(media) {
-    const variants =
-      media.video_info && Array.isArray(media.video_info.variants)
-        ? media.video_info.variants
-        : Array.isArray(media.variants)
-          ? media.variants
-          : [];
-
+  function pickBestMp4(variants) {
+    if (!Array.isArray(variants)) return null;
     const mp4s = variants
       .filter((v) => v && v.url && (v.content_type === 'video/mp4' || /\.mp4(\?|$)/i.test(v.url)))
       .map((v) => ({
@@ -112,109 +130,84 @@
         bitrate: typeof v.bitrate === 'number' ? v.bitrate : -1,
         area: resolutionArea(v.url),
       }));
-
     mp4s.sort((a, b) => b.bitrate - a.bitrate || b.area - a.area);
-    let best = mp4s[0] || null;
-
-    if (typeof media.video_download_url === 'string' && /\.mp4(\?|$)/i.test(media.video_download_url)) {
-      const dlArea = resolutionArea(media.video_download_url);
-      if (!best || dlArea > best.area) {
-        best = { url: media.video_download_url, bitrate: -1, area: dlArea };
-      }
-    }
-
-    return best ? best.url : null;
+    return mp4s[0] ? mp4s[0].url : null;
   }
 
-  function findVideoMediaInObj(obj, depth, seen) {
-    if (!obj || typeof obj !== 'object' || depth > 3 || seen.has(obj)) return null;
-    seen.add(obj);
-    if (Array.isArray(obj)) return null;
-
-    if (
-      (obj.video_info && Array.isArray(obj.video_info.variants)) ||
-      typeof obj.video_download_url === 'string' ||
-      (Array.isArray(obj.variants) && obj.variants.some((v) => v && v.url))
-    ) {
-      const url = pickBestMp4(obj);
-      if (url) return { id: obj.id_str || obj.media_key || null, url };
-    }
-
-    for (const k of Object.keys(obj)) {
-      if (
-        k.startsWith('_') ||
-        k === 'children' ||
-        k === 'stateNode' ||
-        k === 'return' ||
-        k === 'sibling' ||
-        k === 'alternate' ||
-        k === 'child'
-      ) {
-        continue;
-      }
-      const val = obj[k];
-      if (val && typeof val === 'object') {
-        const res = findVideoMediaInObj(val, depth + 1, seen);
-        if (res) return res;
-      }
-    }
-    return null;
-  }
-
-  function extractVideoFromEl(el, article) {
-    let host = el;
-    while (host && host !== article) {
-      let fiber = getReactFiber(host);
-      if (fiber) {
-        for (let i = 0; i < 20 && fiber && fiber.stateNode !== article; i++) {
-          if (fiber.memoizedProps) {
-            const res = findVideoMediaInObj(fiber.memoizedProps, 0, new Set());
-            if (res) return res;
+  function gmGet(url, responseType) {
+    return new Promise((resolve, reject) => {
+      GM_xmlhttpRequest({
+        method: 'GET',
+        url,
+        responseType,
+        onload: (res) => {
+          if (res.status >= 200 && res.status < 300) {
+            resolve(responseType === 'blob' ? res.response : res.responseText);
+          } else {
+            reject(new Error(`HTTP ${res.status} for ${url}`));
           }
-          fiber = fiber.return;
-        }
-        break;
-      }
-      host = host.parentElement;
-    }
-
-    if (el.tagName === 'VIDEO' && typeof el.src === 'string' && /^https:\/\/.*\.mp4(\?|$)/i.test(el.src)) {
-      return { id: null, url: el.src };
-    }
-    return null;
+        },
+        onerror: () => reject(new Error(`Network error for ${url}`)),
+      });
+    });
   }
 
-  function getOwnVideos(article) {
-    const candidates = article.querySelectorAll(
-      'video, [data-testid="videoComponent"], [data-testid="videoPlayer"], img[src*="video_thumb"]'
-    );
-    const seen = new Set();
+  async function fetchVideosFromSyndication(tweetId) {
+    const token = ((Number(tweetId) / 1e15) * Math.PI).toString(36).replace(/(0+|\.)/g, '');
+    const url = `https://cdn.syndication.twimg.com/tweet-result?id=${tweetId}&token=${token}`;
+    const text = await gmGet(url, 'text');
+    const data = JSON.parse(text);
+
+    const mediaList = Array.isArray(data.mediaDetails)
+      ? data.mediaDetails
+      : data.extended_entities && Array.isArray(data.extended_entities.media)
+        ? data.extended_entities.media
+        : [];
+
     const out = [];
-    for (const el of candidates) {
-      if (isInsideQuote(el, article)) continue;
-      const res = extractVideoFromEl(el, article);
-      if (!res) continue;
-      let key = res.id;
-      if (!key) {
-        try {
-          key = new URL(res.url).pathname;
-        } catch {
-          continue;
-        }
-      }
-      if (seen.has(key)) continue;
-      seen.add(key);
-      out.push({ url: res.url, ext: 'mp4' });
+    const seen = new Set();
+    for (const m of mediaList) {
+      if (!m || !m.video_info || !Array.isArray(m.video_info.variants)) continue;
+      const best = pickBestMp4(m.video_info.variants);
+      if (!best || seen.has(best)) continue;
+      seen.add(best);
+      out.push({ url: best, ext: 'mp4' });
+    }
+    if (!out.length && data.video && Array.isArray(data.video.variants)) {
+      const best = pickBestMp4(data.video.variants);
+      if (best) out.push({ url: best, ext: 'mp4' });
     }
     return out;
   }
 
-  async function fetchBlob(url) {
-    const res = await fetch(url, { mode: 'cors', credentials: 'omit' });
-    if (!res.ok) {
-      throw new Error(`HTTP ${res.status} for ${url}`);
+  async function fetchVideosFromFxTwitter(tweetId) {
+    const text = await gmGet(`https://api.fxtwitter.com/status/${tweetId}`, 'text');
+    const data = JSON.parse(text);
+    const videos = data && data.tweet && data.tweet.media && data.tweet.media.videos;
+    if (!Array.isArray(videos)) return [];
+    const out = [];
+    const seen = new Set();
+    for (const v of videos) {
+      if (!v || typeof v.url !== 'string' || seen.has(v.url)) continue;
+      seen.add(v.url);
+      out.push({ url: v.url, ext: 'mp4' });
     }
-    return res.blob();
+    return out;
+  }
+
+  async function resolveTweetVideos(article, tweetId) {
+    const direct = getDirectVideoUrls(article);
+    if (direct.length) return direct;
+    if (!tweetId) return [];
+
+    try {
+      const synd = await fetchVideosFromSyndication(tweetId);
+      if (synd.length) return synd;
+    } catch (err) {
+      console.warn('[X video download] Syndication lookup failed, trying fallback:', err);
+    }
+
+    return fetchVideosFromFxTwitter(tweetId);
   }
 
   function triggerBlobDownload(blob, filename) {
@@ -232,15 +225,19 @@
   async function downloadTweetVideos(article, btn) {
     if (btn.dataset.busy === '1') return;
     const { username, tweetId } = getTweetMeta(article);
-    const videos = getOwnVideos(article);
-    if (!videos.length) return;
 
     btn.dataset.busy = '1';
     try {
+      const videos = await resolveTweetVideos(article, tweetId);
+      if (!videos.length) {
+        console.error('[X video download] No downloadable video URL found for tweet', tweetId);
+        return;
+      }
+      const idPart = tweetId || String(Date.now());
       for (let i = 0; i < videos.length; i++) {
         const { url, ext } = videos[i];
-        const filename = `${username}_${tweetId}_${i + 1}.${ext}`;
-        const blob = await fetchBlob(url);
+        const filename = `${username}_${idPart}_${i + 1}.${ext}`;
+        const blob = await gmGet(url, 'blob');
         triggerBlobDownload(blob, filename);
         if (i + 1 < videos.length) {
           await new Promise((r) => setTimeout(r, 150));
@@ -378,10 +375,10 @@
     const group = getActionBar(article);
     if (!group) return;
 
-    const videos = getOwnVideos(article);
+    const videoCount = countOwnVideos(article);
     const existingSlot = group.querySelector(`[${SLOT_ATTR}]`);
 
-    if (!videos.length) {
+    if (!videoCount) {
       if (existingSlot) existingSlot.remove();
       return;
     }
@@ -390,13 +387,13 @@
     const bookmark = bookmarkSlotOf(group);
     if (!bookmark || !bookmark.slot) return;
 
-    const slot = existingSlot || buildButtonSlot(group, article, videos.length, bookmark);
+    const slot = existingSlot || buildButtonSlot(group, article, videoCount, bookmark);
     if (!slot) return;
 
     if (existingSlot) {
       const btn = existingSlot.querySelector(`button[data-testid="${BTN_TESTID}"]`);
       if (btn) {
-        const label = videos.length > 1 ? 'Download videos' : 'Download video';
+        const label = videoCount > 1 ? 'Download videos' : 'Download video';
         if (btn.getAttribute('aria-label') !== label) {
           btn.setAttribute('aria-label', label);
           btn.setAttribute('title', label);
