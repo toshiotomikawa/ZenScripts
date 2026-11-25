@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         x-download-videos-button
 // @namespace    https://github.com/toshiotomikawa/ZenScripts
-// @version      1.0.0
+// @version      1.0.1
 // @description  Add a native-styled download button to video tweets on X/Twitter to save all videos at source quality.
 // @author       toshiotomikawa
 // @homepageURL  https://github.com/toshiotomikawa/ZenScripts/tree/main/x-download-videos-button
@@ -12,9 +12,9 @@
 // @match        https://x.com/*
 // @match        https://twitter.com/*
 // @run-at       document-idle
-// @grant        GM_addStyle
-// @grant        GM_xmlhttpRequest
-// @connect      video.twimg.com
+// @grant        none
+// @sandbox      MAIN_WORLD
+// @inject-into  page
 // ==/UserScript==
 
 (function () {
@@ -28,7 +28,13 @@
     'M12 16.41l-5.7-5.7 1.41-1.42L11 12.59V3h2v9.59l3.3-3.3 1.41 1.42L12 16.41z' +
     'M21 15l-.02 3.51c0 1.38-1.12 2.49-2.5 2.49H5.5C4.11 21 3 19.88 3 18.5V15h2v3.5c0 .28.22.5.5.5h12.98c.28 0 .5-.22.5-.5L19 15h2z';
 
-  GM_addStyle(`
+  function addStyle(css) {
+    const style = document.createElement('style');
+    style.textContent = css;
+    (document.head || document.documentElement).appendChild(style);
+  }
+
+  addStyle(`
     button[data-testid="${BTN_TESTID}"]:hover > div,
     button[data-testid="${BTN_TESTID}"]:focus-visible > div {
       color: rgb(29, 155, 240) !important;
@@ -76,9 +82,11 @@
   }
 
   function getReactFiber(el) {
-    for (const k of Object.keys(el)) {
+    const target = el && (el.wrappedJSObject || el);
+    if (!target) return null;
+    for (const k of Object.keys(target)) {
       if (k.startsWith('__reactFiber$') || k.startsWith('__reactInternalInstance$')) {
-        return el[k];
+        return target[k];
       }
     }
     return null;
@@ -201,22 +209,12 @@
     return out;
   }
 
-  function fetchBlob(url) {
-    return new Promise((resolve, reject) => {
-      GM_xmlhttpRequest({
-        method: 'GET',
-        url,
-        responseType: 'blob',
-        onload: (res) => {
-          if (res.status >= 200 && res.status < 300 && res.response) {
-            resolve(res.response);
-          } else {
-            reject(new Error(`HTTP ${res.status} for ${url}`));
-          }
-        },
-        onerror: () => reject(new Error(`Network error for ${url}`)),
-      });
-    });
+  async function fetchBlob(url) {
+    const res = await fetch(url, { mode: 'cors', credentials: 'omit' });
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status} for ${url}`);
+    }
+    return res.blob();
   }
 
   function triggerBlobDownload(blob, filename) {
