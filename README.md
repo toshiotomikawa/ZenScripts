@@ -10,6 +10,7 @@ Userscripts and small Windows tools for calmer, cleaner computing.
 | [wikipedia-seamless-background](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/wikipedia-seamless-background/wikipedia-seamless-background.user.js) | Fixes Wikipedia's mismatched background colors |
 | [x-clean-left-sidebar](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-clean-left-sidebar/x-clean-left-sidebar.user.js) | Hides `Calls`, `Creator Studio`, and `Premium` |
 | [x-download-images-button](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-download-images-button/x-download-images-button.user.js) | Saves a post's images at original quality |
+| [x-download-videos-button](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-download-videos-button/x-download-videos-button.user.js) | Saves a post's videos at source quality |
 | [x-hide-analytics-banner](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-analytics-banner/x-hide-analytics-banner.user.js) | Hides the `Access your post analytics` banner |
 | [x-hide-creator-subscribe-button](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-creator-subscribe-button/x-hide-creator-subscribe-button.user.js) | Hides creator `Subscribe` buttons |
 | [x-hide-get-verified-button](https://raw.githubusercontent.com/toshiotomikawa/ZenScripts/main/x-hide-get-verified-button/x-hide-get-verified-button.user.js) | Hides the `Get verified` pill on profiles |
