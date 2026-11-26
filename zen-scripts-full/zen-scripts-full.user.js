@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         zen-scripts-full
 // @namespace    https://github.com/toshiotomikawa/zenscripts
-// @version      1.1.3
+// @version      1.1.4
 // @description  All ZenScripts userscripts in a single bundle (Instagram, WhatsApp, Wikipedia/Wikimedia, X/Twitter, and YouTube).
 // @author       toshiotomikawa
 // @homepageURL  https://github.com/toshiotomikawa/zenscripts/tree/main/zen-scripts-full
@@ -409,6 +409,17 @@
         return { shareBtn, anchor };
       }
 
+      function restingTemplateSvg(section, shareBtn) {
+        const shareSvgs = shareBtn.querySelectorAll('svg');
+        if (shareSvgs.length > 1) {
+          for (const svg of section.querySelectorAll('svg')) {
+            if (isSaveSvg(svg)) return svg;
+          }
+          return shareSvgs[shareSvgs.length - 1];
+        }
+        return shareSvgs[0] || null;
+      }
+
       function buildButton(section, shareBtn) {
         const clone = shareBtn.cloneNode(true);
         clone.setAttribute(BTN_ATTR, '1');
@@ -418,7 +429,7 @@
         clone.setAttribute('title', 'Download image');
         clone.removeAttribute('id');
 
-        const templateSvg = clone.querySelector('svg');
+        const templateSvg = restingTemplateSvg(section, shareBtn);
         const newSvg = makeDownloadSvg(templateSvg);
         clone.textContent = '';
         const iconWrap = document.createElement('div');

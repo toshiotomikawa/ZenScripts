@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         instagram-download-images-button
 // @namespace    https://github.com/toshiotomikawa/zenscripts
-// @version      1.0.3
+// @version      1.0.4
 // @description  Add a native-styled download button to image posts on Instagram to save photos at highest available quality.
 // @author       toshiotomikawa
 // @homepageURL  https://github.com/toshiotomikawa/zenscripts/tree/main/instagram-download-images-button
@@ -378,6 +378,18 @@
     return { shareBtn, anchor };
   }
 
+  function restingTemplateSvg(section, shareBtn) {
+    const shareSvgs = shareBtn.querySelectorAll('svg');
+    // Profile modals put a muted hover SVG first inside Share; use Save's resting SVG class instead.
+    if (shareSvgs.length > 1) {
+      for (const svg of section.querySelectorAll('svg')) {
+        if (isSaveSvg(svg)) return svg;
+      }
+      return shareSvgs[shareSvgs.length - 1];
+    }
+    return shareSvgs[0] || null;
+  }
+
   function buildButton(section, shareBtn) {
     const clone = shareBtn.cloneNode(true);
     clone.setAttribute(BTN_ATTR, '1');
@@ -387,7 +399,7 @@
     clone.setAttribute('title', 'Download image');
     clone.removeAttribute('id');
 
-    const templateSvg = clone.querySelector('svg');
+    const templateSvg = restingTemplateSvg(section, shareBtn);
     const newSvg = makeDownloadSvg(templateSvg);
     // Clear all cloned children so multi-SVG hover-swap buttons never leave a stale icon behind.
     clone.textContent = '';
