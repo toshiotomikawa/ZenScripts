@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         instagram-download-images-button
 // @namespace    https://github.com/toshiotomikawa/zenscripts
-// @version      1.0.4
+// @version      1.0.5
 // @description  Add a native-styled download button to image posts on Instagram to save photos at highest available quality.
 // @author       toshiotomikawa
 // @homepageURL  https://github.com/toshiotomikawa/zenscripts/tree/main/instagram-download-images-button
@@ -12,6 +12,7 @@
 // @match        https://www.instagram.com/*
 // @run-at       document-idle
 // @grant        GM_addStyle
+// @grant        GM_download
 // @grant        GM_xmlhttpRequest
 // @connect      cdninstagram.com
 // @connect      fbcdn.net
@@ -267,15 +268,35 @@
   }
 
   function triggerBlobDownload(blob, filename) {
-    const objUrl = URL.createObjectURL(blob);
+    // Force octet-stream so Firefox downloads instead of opening the image inline in a new tab.
+    const forced = new Blob([blob], { type: 'application/octet-stream' });
+    const objUrl = URL.createObjectURL(forced);
     const a = document.createElement('a');
     a.href = objUrl;
     a.download = filename;
     a.style.display = 'none';
+    a.addEventListener('click', (e) => e.stopPropagation(), { once: true });
     document.body.appendChild(a);
     a.click();
     a.remove();
     setTimeout(() => URL.revokeObjectURL(objUrl), 30000);
+  }
+
+  function gmDownload(url, filename) {
+    return new Promise((resolve, reject) => {
+      if (typeof GM_download !== 'function') {
+        reject(new Error('GM_download unavailable'));
+        return;
+      }
+      GM_download({
+        url,
+        name: filename,
+        saveAs: false,
+        onload: () => resolve(),
+        onerror: (err) => reject(err || new Error('GM_download failed')),
+        ontimeout: () => reject(new Error('GM_download timeout')),
+      });
+    });
   }
 
   async function downloadPostImage(section, btn) {
@@ -289,9 +310,16 @@
 
     btn.dataset.busy = '1';
     try {
+      const ext = extFrom(url, '');
+      const filename = `${username}_${shortcode}.${ext}`;
+      try {
+        await gmDownload(url, filename);
+        return;
+      } catch {
+        // Fall back to fetching as a blob if GM_download is unavailable or blocked.
+      }
       const blob = await fetchBlob(url);
-      const ext = extFrom(url, blob.type);
-      triggerBlobDownload(blob, `${username}_${shortcode}.${ext}`);
+      triggerBlobDownload(blob, `${username}_${shortcode}.${extFrom(url, blob.type)}`);
     } catch (err) {
       console.error('[Instagram image download]', err);
     } finally {
