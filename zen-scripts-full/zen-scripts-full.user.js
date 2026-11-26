@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         zen-scripts-full
 // @namespace    https://github.com/toshiotomikawa/zenscripts
-// @version      1.1.0
+// @version      1.1.1
 // @description  All ZenScripts userscripts in a single bundle (Instagram, WhatsApp, Wikipedia/Wikimedia, X/Twitter, and YouTube).
 // @author       toshiotomikawa
 // @homepageURL  https://github.com/toshiotomikawa/zenscripts/tree/main/zen-scripts-full
@@ -369,14 +369,42 @@
         return svg;
       }
 
-      function findShareButton(leftGroup) {
-        const buttons = leftGroup.querySelectorAll('div[role="button"], button');
-        let lastIconBtn = null;
-        for (const b of buttons) {
-          if (b.getAttribute(BTN_ATTR) === '1') continue;
-          if (b.querySelector('svg')) lastIconBtn = b;
+      function directChildOf(parent, el) {
+        let cur = el;
+        while (cur && cur.parentElement !== parent) {
+          cur = cur.parentElement;
         }
-        return lastIconBtn;
+        return cur && cur.parentElement === parent ? cur : null;
+      }
+
+      function lowestCommonAncestor(a, b, limit) {
+        let cur = a;
+        while (cur && cur !== limit.parentElement) {
+          if (cur.contains(b)) return cur;
+          cur = cur.parentElement;
+        }
+        return limit;
+      }
+
+      function findActionRowAndShare(section) {
+        const iconBtns = [];
+        for (const el of section.querySelectorAll('div[role="button"], button')) {
+          if (el.getAttribute(BTN_ATTR) === '1') continue;
+          const svg = el.querySelector('svg');
+          if (!svg || isSaveSvg(svg)) continue;
+          iconBtns.push(el);
+        }
+        if (iconBtns.length < 2) return null;
+        const firstBtn = iconBtns[0];
+        const shareBtn = iconBtns[iconBtns.length - 1];
+        const row = lowestCommonAncestor(firstBtn, shareBtn, section);
+        let anchor = directChildOf(row, shareBtn);
+        if (!anchor) return null;
+        const next = anchor.nextElementSibling;
+        if (next && next.getAttribute(BTN_ATTR) !== '1' && !next.querySelector('svg')) {
+          anchor = next;
+        }
+        return { shareBtn, anchor };
       }
 
       function buildButton(section, shareBtn) {
@@ -412,25 +440,23 @@
 
       function processSection(section) {
         if (!section || !section.isConnected) return;
-        const leftGroup = section.firstElementChild;
-        if (!leftGroup) return;
 
         const container = getPostContainer(section);
         const hasImage = Boolean(getVisiblePostImage(container));
-        const existing = leftGroup.querySelector(`[${BTN_ATTR}="1"]`);
+        const existing = section.querySelector(`[${BTN_ATTR}="1"]`);
 
         if (!hasImage) {
           if (existing) existing.remove();
           return;
         }
 
-        if (existing) return;
+        const found = findActionRowAndShare(section);
+        if (!found) return;
 
-        const shareBtn = findShareButton(leftGroup);
-        if (!shareBtn) return;
-
-        const btn = buildButton(section, shareBtn);
-        leftGroup.appendChild(btn);
+        const btn = existing || buildButton(section, found.shareBtn);
+        if (found.anchor.nextElementSibling !== btn) {
+          found.anchor.insertAdjacentElement('afterend', btn);
+        }
       }
 
       let scheduled = false;
