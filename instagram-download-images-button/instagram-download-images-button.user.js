@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         instagram-download-images-button
 // @namespace    https://github.com/toshiotomikawa/zenscripts
-// @version      1.0.1
+// @version      1.0.2
 // @description  Add a native-styled download button to image posts on Instagram to save photos at highest available quality.
 // @author       toshiotomikawa
 // @homepageURL  https://github.com/toshiotomikawa/zenscripts/tree/main/instagram-download-images-button
@@ -68,6 +68,8 @@
     const sections = root.matches && root.matches('section') ? [root] : [];
     for (const sec of root.querySelectorAll('section')) sections.push(sec);
     for (const sec of sections) {
+      // Only leaf action-bar sections: skip outer page/post wrapper sections.
+      if (sec.querySelector('section, form, textarea, input')) continue;
       if (sec.children.length < 2) continue;
       const svgs = sec.querySelectorAll('svg');
       let hasSave = false;
@@ -365,8 +367,9 @@
     const firstBtn = iconBtns[0];
     const shareBtn = iconBtns[iconBtns.length - 1];
     const row = lowestCommonAncestor(firstBtn, shareBtn, section);
+    if (!section.contains(row)) return null;
     let anchor = directChildOf(row, shareBtn);
-    if (!anchor) return null;
+    if (!anchor || anchor === section || !section.contains(anchor)) return null;
     // If Share has an adjacent count span (no SVG), place Download after it.
     const next = anchor.nextElementSibling;
     if (next && next.getAttribute(BTN_ATTR) !== '1' && !next.querySelector('svg')) {

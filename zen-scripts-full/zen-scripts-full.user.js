@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         zen-scripts-full
 // @namespace    https://github.com/toshiotomikawa/zenscripts
-// @version      1.1.1
+// @version      1.1.2
 // @description  All ZenScripts userscripts in a single bundle (Instagram, WhatsApp, Wikipedia/Wikimedia, X/Twitter, and YouTube).
 // @author       toshiotomikawa
 // @homepageURL  https://github.com/toshiotomikawa/zenscripts/tree/main/zen-scripts-full
@@ -102,6 +102,7 @@
         const sections = root.matches && root.matches('section') ? [root] : [];
         for (const sec of root.querySelectorAll('section')) sections.push(sec);
         for (const sec of sections) {
+          if (sec.querySelector('section, form, textarea, input')) continue;
           if (sec.children.length < 2) continue;
           const svgs = sec.querySelectorAll('svg');
           let hasSave = false;
@@ -398,8 +399,9 @@
         const firstBtn = iconBtns[0];
         const shareBtn = iconBtns[iconBtns.length - 1];
         const row = lowestCommonAncestor(firstBtn, shareBtn, section);
+        if (!section.contains(row)) return null;
         let anchor = directChildOf(row, shareBtn);
-        if (!anchor) return null;
+        if (!anchor || anchor === section || !section.contains(anchor)) return null;
         const next = anchor.nextElementSibling;
         if (next && next.getAttribute(BTN_ATTR) !== '1' && !next.querySelector('svg')) {
           anchor = next;
