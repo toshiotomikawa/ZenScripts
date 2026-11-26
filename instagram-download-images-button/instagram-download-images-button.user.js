@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         instagram-download-images-button
 // @namespace    https://github.com/toshiotomikawa/zenscripts
-// @version      1.0.2
+// @version      1.0.3
 // @description  Add a native-styled download button to image posts on Instagram to save photos at highest available quality.
 // @author       toshiotomikawa
 // @homepageURL  https://github.com/toshiotomikawa/zenscripts/tree/main/instagram-download-images-button
@@ -387,14 +387,14 @@
     clone.setAttribute('title', 'Download image');
     clone.removeAttribute('id');
 
-    const oldSvg = clone.querySelector('svg');
-    const newSvg = makeDownloadSvg(oldSvg);
-    if (oldSvg && oldSvg.parentElement) {
-      oldSvg.replaceWith(newSvg);
-    } else {
-      clone.textContent = '';
-      clone.appendChild(newSvg);
-    }
+    const templateSvg = clone.querySelector('svg');
+    const newSvg = makeDownloadSvg(templateSvg);
+    // Clear all cloned children so multi-SVG hover-swap buttons never leave a stale icon behind.
+    clone.textContent = '';
+    const iconWrap = document.createElement('div');
+    iconWrap.style.cssText = 'display:flex;align-items:center;justify-content:center;';
+    iconWrap.appendChild(newSvg);
+    clone.appendChild(iconWrap);
 
     const activate = (e) => {
       e.preventDefault();
